@@ -25,12 +25,12 @@ func (s *IssueLinkTypeService) GetList(ctx context.Context) ([]IssueLinkType, *R
 		return nil, nil, err
 	}
 
-	linkTypeList := []IssueLinkType{}
+	var linkTypeList map[string]([]IssueLinkType)
 	resp, err := s.client.Do(req, &linkTypeList)
 	if err != nil {
 		return nil, resp, NewJiraError(resp, err)
 	}
-	return linkTypeList, resp, nil
+	return linkTypeList["issueLinkTypes"], resp, nil
 }
 
 // Get gets info of a specific issue link type from Jira.
@@ -39,7 +39,10 @@ func (s *IssueLinkTypeService) GetList(ctx context.Context) ([]IssueLinkType, *R
 //
 // TODO Double check this method if this works as expected, is using the latest API and the response is complete
 // This double check effort is done for v2 - Remove this two lines if this is completed.
-func (s *IssueLinkTypeService) Get(ctx context.Context, ID string) (*IssueLinkType, *Response, error) {
+func (s *IssueLinkTypeService) Get(
+	ctx context.Context,
+	ID string,
+) (*IssueLinkType, *Response, error) {
 	apiEndPoint := fmt.Sprintf("rest/api/2/issueLinkType/%s", ID)
 	req, err := s.client.NewRequest(ctx, http.MethodGet, apiEndPoint, nil)
 	if err != nil {
@@ -60,7 +63,10 @@ func (s *IssueLinkTypeService) Get(ctx context.Context, ID string) (*IssueLinkTy
 //
 // TODO Double check this method if this works as expected, is using the latest API and the response is complete
 // This double check effort is done for v2 - Remove this two lines if this is completed.
-func (s *IssueLinkTypeService) Create(ctx context.Context, linkType *IssueLinkType) (*IssueLinkType, *Response, error) {
+func (s *IssueLinkTypeService) Create(
+	ctx context.Context,
+	linkType *IssueLinkType,
+) (*IssueLinkType, *Response, error) {
 	apiEndpoint := "/rest/api/2/issueLinkType"
 	req, err := s.client.NewRequest(ctx, http.MethodPost, apiEndpoint, linkType)
 	if err != nil {
@@ -89,7 +95,10 @@ func (s *IssueLinkTypeService) Create(ctx context.Context, linkType *IssueLinkTy
 //
 // TODO Double check this method if this works as expected, is using the latest API and the response is complete
 // This double check effort is done for v2 - Remove this two lines if this is completed.
-func (s *IssueLinkTypeService) Update(ctx context.Context, linkType *IssueLinkType) (*IssueLinkType, *Response, error) {
+func (s *IssueLinkTypeService) Update(
+	ctx context.Context,
+	linkType *IssueLinkType,
+) (*IssueLinkType, *Response, error) {
 	apiEndpoint := fmt.Sprintf("rest/api/2/issueLinkType/%s", linkType.ID)
 	req, err := s.client.NewRequest(ctx, http.MethodPut, apiEndpoint, linkType)
 	if err != nil {
